@@ -9,18 +9,14 @@
 
 <body>
     <div id = "addButton" class = "row">
-        <button data-cars="ferrari" id = "searchButton">ponies</button>
-        <button data-cars="lamborghini" id = "searchButton">bull</button>
-        <button data-cars="bugatti" id = "searchButton">fastest</button>
-        <br>
-        <div id="gifs-appear-here">
-        </div>
-    </div>
+       </div>
     <div class="container">
       <div class = "row">
         <div class = "col-sm-5">
          <input type="text" id="searchGif" placeholder="Search Here">
          <input type="submit" id = "submitButton" value = "Search">
+        <div id="gifs-appear-here">
+        </div>
         </div>
       </div>
     </div>
@@ -37,7 +33,8 @@
       createButton();
 
       //user input and stuff
-          $(".searchButton").on("click", function(event){
+          $("#submitButton").on("click", function(event){
+            console.log("click")
             event.preventDefault();
 
             var vehicles = $("#searchGif").val().trim()
@@ -49,7 +46,9 @@
           })
           //creates button for topics array 
             function createButton(){
-               for (var i = 0; i < topics.length; i++) {
+              $("#addButton").empty();
+
+          for (var i = 0; i < topics.length; i++) {
             var a = $("<button>");
             a.attr("data-cars", topics[i]);
             a.addClass("searchButton");
@@ -59,49 +58,50 @@
 
           }
 
-         $("#submitButton").on("click", function() {
-            $("#addButton").append("<button id = 'searchData' data-cars = 'searchInput'>searchInput</button>");
-            var randomStuff2 = $('#searchData').attr("data-cars");
-            var queryURL2 = "http://api.giphy.com/v1/gifs/search?q=" +
-            randomStuff2 + "&api_key=dc6zaTOxFJmzC&limit=10";
+          function showGif(){
+            var randomStuff = $(this).attr("data-cars");
+            console.log(randomStuff)
+            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+            randomStuff + "&api_key=dc6zaTOxFJmzC&limit=10";
+          
 
              $.ajax({
-              url: queryURL2,
+              url: queryURL,
               method: "GET"
             }).done(function(response) {
+             console.log(response)
+            var results = response.data;
 
-              var results2 = response.data;
+            for (var i = 0; i < results.length; i++) {
+              var carsDiv = $("<div>");
+              var rating = results[i].rating;
+              var cRating = $("<p class = rating>").text("Rating: " + rating);
+              carsDiv.prepend(cRating);
+              var carStill = $("<img class = carImage>").attr("src", results[i].images.fixed_width_still.url).val(i)
+              carsDiv.prepend(carStill)
+              $("#gifs-appear-here").prepend(carsDiv)
+            }
 
-        // ========================
+            $(".carImage").on("click", function(){
 
-         for (var i = 0; i < results2.length; i++) {
+              if(animate === 0){
+                $(this).attr("src", results[this.value].images.fixed_width.url)
+                animate++;
+                  } else {
+                    $(this).attr("src", results[this.value].images.fixed_width_still.url);
+                    animate--;
 
-        // ============= put step 3 in between these dashes ======================
+                  }
 
-        var carsDiv = $("<div>")
-        var pCars = $("<p>")
-        // Set the inner text of the paragraph to the rating of the image in results[i].
-        $(pCars).html(results2[i].rating)
-        // Make an image tag with jQuery and store it in a variable named animalImage.
-        var carsImage = $("<img>")
-        // Set the image's src to results[i]'s fixed_height.url.
-        carsImage.attr("src", results[i].images.fixed_height.url);
-        // Append the p variable to the animalDiv variable.
-        carsDiv.append(p)
-        // Append the animalImage variable to the animalDiv variable.
-        carsDiv.append(animalImage)
-        // Prepend the animalDiv variable to the element with an id of gifs-appear-here.
-        $("#gifs-appear-here").prepend(carsDiv)
+            })
 
+        })
 
-        }
+      }
 
-      })
+      $(document).on("click", ".searchButton", showGif)
 
     })
-      
-
-  })
     
   </script>
 </body>
