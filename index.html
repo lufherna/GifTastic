@@ -3,21 +3,43 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Random Animal Gifs</title>
+  <title>Random Car Gifs</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 
 <body>
-  <button data-animal="cat">meow</button>
-  <button data-animal="dog">woof</button>
-  <button data-animal="bird">chirp</button>
-  <div id="gifs-appear-here">
+    <div id = "addButton" class = "row">
+        <button data-cars="ferrari">ponies</button>
+        <button data-cars="lamborghini">bull</button>
+        <button data-cars="bugatti">fastest</button>
+        <br>
+        <div id="gifs-appear-here">
+        </div>
+    </div>
+    <div class="container">
+      <div class = "row">
+        <div class = "col-sm-5">
+         <input type="search" id="searchGif" class="form-control" placeholder="Search Here">
+         <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+      </div>
+    </div>
   </div>
+
   <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
   <script type="text/javascript">
+
+    var topics = ["BMW", "Ferrari", "Lamborghini", "Bugatti", "Mercedes"];
+
+       for (var i = 0; i < topics.length; i++) {
+        $('#addButton').append("<button data-cars = 'topics[i]'>topics[i]</button>")
+
+          }
+      
     $("button").on("click", function() {
-      var randomStuff = $(this).attr("data-animal");
+      var randomStuff = $(this).attr("data-cars");
       var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
-        randomStuff + "&api_key=dc6zaTOxFJmzC&limit=10";
+        randomStuff + "&api_key=dc6zaTOxFJmzC&limit=5";
 
       $.ajax({
         url: queryURL,
