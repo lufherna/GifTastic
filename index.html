@@ -9,9 +9,9 @@
 
 <body>
     <div id = "addButton" class = "row">
-        <button data-cars="ferrari">ponies</button>
-        <button data-cars="lamborghini">bull</button>
-        <button data-cars="bugatti">fastest</button>
+        <button data-cars="ferrari" id = "searchButton">ponies</button>
+        <button data-cars="lamborghini" id = "searchButton">bull</button>
+        <button data-cars="bugatti" id = "searchButton">fastest</button>
         <br>
         <div id="gifs-appear-here">
         </div>
@@ -20,7 +20,7 @@
       <div class = "row">
         <div class = "col-sm-5">
          <input type="search" id="searchGif" class="form-control" placeholder="Search Here">
-         <button type="submit" class="btn btn-default">Submit</button>
+         <button type="submit" id = "submitButton" class="btn btn-default">Submit</button>
         </div>
       </div>
     </div>
@@ -32,14 +32,22 @@
     var topics = ["BMW", "Ferrari", "Lamborghini", "Bugatti", "Mercedes"];
 
        for (var i = 0; i < topics.length; i++) {
-        $('#addButton').append("<button data-cars = 'topics[i]'>topics[i]</button>")
+        $('#addButton').append("<button data-cars = 'topics[i]' id = 'searchButton'>topics[i]</button>")
 
           }
+
+        var searchInput = $("#searchGif").val();
+
+        $("#submitButton").on("click", function() {
+            $("#addButton").append("<button data-cars = 'searchInput'>searchInput</button>");
+
+
+        })
       
-    $("button").on("click", function() {
+    $("#searchButton").on("click", function searchThrough() {
       var randomStuff = $(this).attr("data-cars");
       var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
-        randomStuff + "&api_key=dc6zaTOxFJmzC&limit=5";
+        randomStuff + "&api_key=dc6zaTOxFJmzC&limit=10";
 
       $.ajax({
         url: queryURL,
@@ -47,8 +55,6 @@
       }).done(function(response) {
         // Step 1: Run this file, click a button, and see what the response object looks like in the browser's console.
         // Open up the data key, then open up the 0th, element. Study the keys and how the JSON is structured.
-
-        console.log(response);
 
         // Step 2: since the image information is inside of the data key,
         // make a variable named results and set it equal to response.data
