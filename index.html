@@ -28,13 +28,12 @@
     $(document).ready(function() {
 
       var animate = 0;
-    
-      var topics = ["BMW", "Ferrari", "Lamborghini", "Bugatti", "Mercedes", "Lotus"];
+      //array of topics
+      var topics = ["BMW", "Ferrari", "Lamborghini", "Bugatti", "Mercedes"];
       createButton();
 
       //user input and stuff
-          $("#submitButton").on("click", function(event){
-            console.log("click")
+        $("#submitButton").on("click", function(event){
             event.preventDefault();
 
             var vehicles = $("#searchGif").val().trim()
@@ -42,26 +41,28 @@
               if (vehicles !== "") {
                 topics.push(vehicles)
                 createButton();
-           }
-          })
+                showGif();
+              }
+            })
+
           //creates button for topics array 
             function createButton(){
               $("#addButton").empty();
 
           for (var i = 0; i < topics.length; i++) {
-            var a = $("<button>");
-            a.attr("data-cars", topics[i]);
-            a.addClass("searchButton");
-            a.text(topics[i]);
-            $("#addButton").append(a)
+              var a = $("<button>");
+              a.attr("data-cars", topics[i]);
+              a.addClass("searchButton");
+              a.text(topics[i]);
+              $("#addButton").append(a)
             }
 
           }
-
+          //function that'll show the gifs
           function showGif(){
             var randomStuff = $(this).attr("data-cars");
             console.log(randomStuff)
-            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
             randomStuff + "&api_key=dc6zaTOxFJmzC&limit=10";
           
 
@@ -72,6 +73,7 @@
              console.log(response)
             var results = response.data;
 
+            //loops around to create additional div and attributes for the results
             for (var i = 0; i < results.length; i++) {
               var carsDiv = $("<div>");
               var rating = results[i].rating;
@@ -82,6 +84,7 @@
               $("#gifs-appear-here").prepend(carsDiv)
             }
 
+            //function that allows image to be turned on or off by clicking
             $(".carImage").on("click", function(){
 
               if(animate === 0){
@@ -93,11 +96,11 @@
 
                   }
 
+              })
+
             })
 
-        })
-
-      }
+          }
 
       $(document).on("click", ".searchButton", showGif)
 
