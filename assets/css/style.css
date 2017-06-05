@@ -8,3 +8,22 @@ body {
 #searchGif {
 	float: right;
 }
+
+.searchButton {
+	margin: 5px 0 0 10px;
+
+}
+
+#submitButton {
+	float:right;
+}
+
+#gifs-appear-here {
+
+	display: inline-block;	
+}
+
+.carImage {
+	float: left;
+
+}

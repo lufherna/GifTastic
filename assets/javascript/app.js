@@ -8,7 +8,6 @@ $(document).ready(function() {
       //user input and stuff
         $("#submitButton").on("click", function(event){
             event.preventDefault();
-            console.log(this)
 
             var vehicles = $("#searchGif").val().trim()
               //no empty buttons
@@ -35,7 +34,6 @@ $(document).ready(function() {
           //function that'll show the gifs
           function showGif(){
             var randomStuff = $(this).attr("data-cars");
-            console.log(randomStuff)
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
             randomStuff + "&api_key=dc6zaTOxFJmzC&limit=10";
           
