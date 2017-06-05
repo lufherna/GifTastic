@@ -1,112 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Random Car Gifs</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Random Car Gifs</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-
-<body>
-    <div id = "addButton" class = "row">
-       </div>
-    <div class="container">
-      <div class = "row">
-        <div class = "col-sm-5">
-         <input type="text" id="searchGif" placeholder="Search Here">
-         <input type="submit" id = "submitButton" value = "Search">
-        <div id="gifs-appear-here">
-        </div>
+  <body>
+      <div id = "addButton" class = "row">
+         </div>
+      <div class="container">
+        <div class = "row">
+          <div class = "col-sm-5">
+           <input type="text" id="searchGif" placeholder="Search for your car here!">
+           <input type="submit" id = "submitButton" value = "Search">
+          <div id="gifs-appear-here">
+          </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-
-      var animate = 0;
-      //array of topics
-      var topics = ["BMW", "Ferrari", "Lamborghini", "Bugatti", "Mercedes"];
-      createButton();
-
-      //user input and stuff
-        $("#submitButton").on("click", function(event){
-            event.preventDefault();
-
-            var vehicles = $("#searchGif").val().trim()
-              //no empty buttons
-              if (vehicles !== "") {
-                topics.push(vehicles)
-                createButton();
-                showGif();
-              }
-            })
-
-          //creates button for topics array 
-            function createButton(){
-              $("#addButton").empty();
-
-          for (var i = 0; i < topics.length; i++) {
-              var a = $("<button>");
-              a.attr("data-cars", topics[i]);
-              a.addClass("searchButton");
-              a.text(topics[i]);
-              $("#addButton").append(a)
-            }
-
-          }
-          //function that'll show the gifs
-          function showGif(){
-            var randomStuff = $(this).attr("data-cars");
-            console.log(randomStuff)
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-            randomStuff + "&api_key=dc6zaTOxFJmzC&limit=10";
-          
-
-             $.ajax({
-              url: queryURL,
-              method: "GET"
-            }).done(function(response) {
-             console.log(response)
-            var results = response.data;
-
-            //loops around to create additional div and attributes for the results
-            for (var i = 0; i < results.length; i++) {
-              var carsDiv = $("<div>");
-              var rating = results[i].rating;
-              var cRating = $("<p class = rating>").text("Rating: " + rating);
-              carsDiv.prepend(cRating);
-              var carStill = $("<img class = carImage>").attr("src", results[i].images.fixed_width_still.url).val(i)
-              carsDiv.prepend(carStill)
-              $("#gifs-appear-here").prepend(carsDiv)
-            }
-
-            //function that allows image to be turned on or off by clicking
-            $(".carImage").on("click", function(){
-
-              if(animate === 0){
-                $(this).attr("src", results[this.value].images.fixed_width.url)
-                animate++;
-                  } else {
-                    $(this).attr("src", results[this.value].images.fixed_width_still.url);
-                    animate--;
-
-                  }
-
-              })
-
-            })
-
-          }
-
-      $(document).on("click", ".searchButton", showGif)
-
-    })
-    
-  </script>
-</body>
+  </body>
 
 </html>
